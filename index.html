@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sundial Watch Face with 1440TIME Label</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000000; /* Changed to black */
+            font-family: Arial, sans-serif;
+        }
+        .watch-face {
+            width: 300px;
+            height: 300px;
+            background-color: #000000; /* Changed to black */
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 20px rgba(255,255,255,0.1); /* Changed shadow color for visibility */
+        }
+        .digital-time {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 24px;
+        }
+        .minute-countdown {
+            position: absolute;
+            bottom: 40%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 36px;
+        }
+        .second-hand {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 35%;
+            background-color: #ff0000;
+            transform-origin: top center;
+            transform: rotate(0deg);
+        }
+        .label-1440time {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="watch-face">
+        <div class="digital-time" id="digitalTime">4:40 PM</div>
+        <div class="minute-countdown" id="minuteCountdown">437</div>
+        <div class="second-hand" id="secondHand"></div>
+        <div class="label-1440time">1440TIME</div>
+    </div>
+    <script>
+        function updateWatchFace() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            
+            const digitalTime = document.getElementById('digitalTime');
+            digitalTime.textContent = `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+            
+            const minuteCountdown = document.getElementById('minuteCountdown');
+            const minutesLeft = 1440 - (now.getHours() * 60 + minutes);
+            minuteCountdown.textContent = minutesLeft;
+            
+            const secondHand = document.getElementById('secondHand');
+            const secondDegrees = seconds * 6;
+            
+            secondHand.style.transform = `rotate(${secondDegrees}deg)`;
+        }
+        
+        setInterval(updateWatchFace, 1000);
+        updateWatchFace();
+    </script>
+</body>
+</html>
